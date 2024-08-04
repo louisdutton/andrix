@@ -1,4 +1,4 @@
-package com.delasign.samplestarterproject
+package sh.ld2.example
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
