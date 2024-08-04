@@ -8,23 +8,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import sh.ld2.example.ui.styleguide.theme.Helvetica
 
 @Composable
 fun HeaderText(copy: String, color: Color, modifier: Modifier) {
-    Text(
-        text = copy,
-        modifier = modifier,
-        color = color,
-        style = HeaderTextStyle,
-    )
+  Text(
+      text = copy,
+      modifier = modifier,
+      color = color,
+      style = HeaderTextStyle,
+  )
 }
 
-val HeaderTextStyle = TextStyle(
-    fontFamily = Helvetica,
-    fontWeight = FontWeight.Bold,
-    fontStyle = FontStyle.Normal,
-    fontSize = 48.sp,
-    lineHeight = 72.sp,
-    letterSpacing = 0.sp,
-)
+val HeaderTextStyle =
+    TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontStyle = FontStyle.Normal,
+        fontSize = 48.sp,
+        lineHeight = 72.sp,
+        letterSpacing = 0.sp,
+    )

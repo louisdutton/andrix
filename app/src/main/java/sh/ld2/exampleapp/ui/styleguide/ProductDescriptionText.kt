@@ -8,23 +8,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import sh.ld2.example.ui.styleguide.theme.Helvetica
 
 @Composable
 fun ProductDescriptionText(copy: String, color: Color, modifier: Modifier) {
-    Text(
-        text = copy,
-        modifier = modifier,
-        color = color,
-        style = ProductDescriptionTextStyle,
-    )
+  Text(
+      text = copy,
+      modifier = modifier,
+      color = color,
+      style = ProductDescriptionTextStyle,
+  )
 }
 
-val ProductDescriptionTextStyle = TextStyle(
-    fontFamily = Helvetica,
-    fontWeight = FontWeight.Normal,
-    fontStyle = FontStyle.Normal,
-    fontSize = 18.sp,
-    lineHeight = 27.sp,
-    letterSpacing = 0.sp,
-)
+val ProductDescriptionTextStyle =
+    TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontStyle = FontStyle.Normal,
+        fontSize = 18.sp,
+        lineHeight = 27.sp,
+        letterSpacing = 0.sp,
+    )
