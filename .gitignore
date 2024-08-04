@@ -75,3 +75,5 @@ lint/tmp/
 # App Specific cases 
 app/release/output.json
 .idea/codeStyles/
+# Kotlin language server
+kls_database.db
