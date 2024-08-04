@@ -3,62 +3,46 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    devshell.url = "github:numtide/devshell";
     flake-utils.url = "github:numtide/flake-utils";
-    android.url = "github:tadfisher/android-nixpkgs";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      devshell,
       flake-utils,
-      android,
     }:
-    {
-      overlay = final: prev: { inherit (self.packages.${final.system}) android-sdk; };
-    }
-    //
-      flake-utils.lib.eachSystem
-        [
-          "aarch64-darwin"
-          "x86_64-darwin"
-          "x86_64-linux"
-        ]
-        (
-          system:
-          let
-            inherit (nixpkgs) lib;
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [
-                devshell.overlays.default
-                self.overlay
-              ];
-            };
-          in
-          {
-            packages = {
-              android-sdk = android.sdk.${system} (
-                sdkPkgs: with sdkPkgs; [
-                  # Useful packages for building and testing.
-                  build-tools-34-0-0
-                  cmdline-tools-latest
-                  emulator
-                  platform-tools
-                  platforms-android-34
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            android_sdk.accept_license = true;
+          };
+        };
 
-                  # Other useful packages for a development environment.
-                  # ndk-26-1-10909125
-                  # skiaparser-3
-                  # sources-android-34
-                ]
-              );
-            };
+        buildToolsVersion = "34.0.0";
+        androidPkgs = pkgs.androidenv.composeAndroidPackages {
+          buildToolsVersions = [ buildToolsVersion ];
+          platformVersions = [ "34" ];
+        };
+        androidSdk = androidPkgs.androidsdk;
+      in
+      with pkgs;
+      {
+        devShells.default = mkShell rec {
+          buildInputs = [
+            androidSdk
+            gradle
+            jdk
+          ];
 
-            devShell = import ./devshell.nix { inherit pkgs; };
-          }
-        );
+          ANDROID_HOME = "${androidSdk}/libexec/android-sdk";
+          ANDROID_NDK_ROOT = "${ANDROID_HOME}/ndk-bundle";
+          GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/${buildToolsVersion}/aapt2";
+        };
+      }
+    );
 }
